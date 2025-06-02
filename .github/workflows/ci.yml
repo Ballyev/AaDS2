@@ -1,0 +1,38 @@
+name: CI for Linear Solver
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up C++ environment
+        uses: actions/setup-cpp@v2
+        with:
+          compiler: gcc
+          lib: libstdc++
+
+      - name: Install Eigen3
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libeigen3-dev
+
+      - name: Build project
+        run: make all
+
+      - name: Run tests
+        run: make test
+
+      - name: Format code (optional)
+        run: make format
+
+      - name: Lint code (optional)
+        run: make lint
