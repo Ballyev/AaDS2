@@ -11,7 +11,15 @@ $(TARGET): $(SOURCES)
 clean:
 	rm -f $(TARGET) *.csv
 
+
 test: $(TARGET)
 	./$(TARGET) --test
 
-.PHONY: all clean test
+
+format:
+	clang-format -i $(SOURCES) linear_solver.h
+
+lint:
+	cppcheck $(SOURCES) linear_solver.h
+
+.PHONY: all clean test format lint
